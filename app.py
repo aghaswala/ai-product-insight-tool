@@ -1,6 +1,18 @@
 import streamlit as st
 from groq import Groq
 
+from fpdf import FPDF
+
+def create_pdf(text):
+    pdf = FPDF()
+    pdf.add_page()
+    pdf.set_font("Arial", size=12)
+
+    for line in text.split("\n"):
+        pdf.multi_cell(0, 8, line)
+
+    return pdf.output(dest="S").encode("latin-1")
+
 import os
 client = Groq(api_key=os.environ["GROQ_API_KEY"])
 
@@ -38,3 +50,17 @@ Return:
 
         st.subheader("AI Analysis")
         st.write(response.choices[0].message.content)
+
+analysis_text = response.choices[0].message.content
+
+st.subheader("📊 AI Analysis")
+st.markdown(analysis_text)
+
+pdf = create_pdf(analysis_text)
+
+st.download_button(
+    label="📥 Download Report as PDF",
+    data=pdf,
+    file_name="ai_product_report.pdf",
+    mime="application/pdf"
+)
