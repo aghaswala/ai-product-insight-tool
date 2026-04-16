@@ -22,17 +22,19 @@ st.write("Enter customer reviews and get AI-powered insights.")
 
 reviews = st.text_area("Paste reviews (one per line):")
 
-if st.button("Analyze"):
+if st.button("Analyze Feedback"):
 
     if not reviews.strip():
         st.warning("Please enter some reviews first.")
     else:
-        response = client.chat.completions.create(
-            model="llama-3.1-8b-instant",
-            messages=[
-                {
-                    "role": "user",
-                    "content": f"""
+        with st.spinner("Analyzing feedback..."):
+
+            response = client.chat.completions.create(
+                model="llama-3.1-8b-instant",
+                messages=[
+                    {
+                        "role": "user",
+                        "content": f"""
 You are a product analyst.
 
 Analyze these customer reviews:
@@ -44,23 +46,20 @@ Return:
 2. Top positives
 3. 3 product improvement ideas
 """
-                }
-            ]
+                    }
+                ]
+            )
+
+            analysis_text = response.choices[0].message.content
+
+        st.subheader("📊 AI Analysis")
+        st.markdown(analysis_text)
+
+        pdf = create_pdf(analysis_text)
+
+        st.download_button(
+            label="📥 Download Report as PDF",
+            data=pdf,
+            file_name="ai_product_report.pdf",
+            mime="application/pdf"
         )
-
-        st.subheader("AI Analysis")
-        st.write(response.choices[0].message.content)
-
-analysis_text = response.choices[0].message.content
-
-st.subheader("📊 AI Analysis")
-st.markdown(analysis_text)
-
-pdf = create_pdf(analysis_text)
-
-st.download_button(
-    label="📥 Download Report as PDF",
-    data=pdf,
-    file_name="ai_product_report.pdf",
-    mime="application/pdf"
-)
