@@ -3,6 +3,14 @@ from groq import Groq
 
 from fpdf import FPDF
 from datetime import datetime
+from zoneinfo import ZoneInfo
+
+now = datetime.now(ZoneInfo("America/New_York"))
+
+st.set_page_config(
+    page_title="AI Product Insight Tool",
+    page_icon="📊"
+)
 
 def create_pdf(text):
     pdf = FPDF()
@@ -22,7 +30,7 @@ def create_pdf(text):
 
     # Time
     pdf.set_font("Arial", size=9)
-    pdf.cell(0, 8, f"Generated on: {datetime.now().strftime('%Y-%m-%d %H:%M')}", ln=True)
+    pdf.cell(0, 8, f"Generated on: {now.strftime('%Y-%m-%d %H:%M')} EST", ln=True)
     pdf.ln(5)
 
     # Body
