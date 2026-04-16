@@ -27,7 +27,7 @@ def create_pdf(text):
 
     # Time
     pdf.set_font("Arial", size=9)
-    pdf.cell(0, 8, f"Generated on: {now.strftime('%Y-%m-%d %H:%M')} UTC", ln=True)
+    pdf.cell(0, 8, f"Generated on: {datetime.now().strftime('%Y-%m-%d %H:%M')} UTC", ln=True)
     pdf.ln(5)
 
     # Body
