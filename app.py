@@ -2,6 +2,7 @@ import streamlit as st
 from groq import Groq
 
 from fpdf import FPDF
+from datetime import datetime
 
 def create_pdf(text):
     pdf = FPDF()
@@ -19,11 +20,10 @@ def create_pdf(text):
 
     pdf.ln(10)
 
-from datetime import datetime
-
-pdf.set_font("Arial", size=9)
-pdf.cell(0, 8, f"Generated on: {datetime.now().strftime('%Y-%m-%d %H:%M')}", ln=True)
-pdf.ln(5)
+    # Time
+    pdf.set_font("Arial", size=9)
+    pdf.cell(0, 8, f"Generated on: {datetime.now().strftime('%Y-%m-%d %H:%M')}", ln=True)
+    pdf.ln(5)
 
     # Body
     pdf.set_font("Arial", size=12)
