@@ -12,7 +12,9 @@ st.set_page_config(
 def create_pdf(text):
     pdf = FPDF()
     pdf.add_page()
-
+    pdf.set_left_margin(15)
+    pdf.set_right_margin(15)
+    
     # Title
     pdf.set_font("Arial", "B", 16)
     pdf.cell(0, 10, "AI Insight Report", ln=True)
@@ -36,23 +38,27 @@ def create_pdf(text):
     for line in text.split("\n"):
         line = line.strip()
 
+        if not line:
+            pdf.ln(4)
+            continue
+        
         # Detect section headers
         if line.lower().startswith("1.") or "complaint" in line.lower():
             pdf.ln(5)
             pdf.set_font("Arial", "B", 13)
-            pdf.cell(0, 8, line, ln=True)
+            pdf.multi_cell(0, 8, line)
             pdf.set_font("Arial", size=12)
 
         elif line.lower().startswith("2.") or "positive" in line.lower():
             pdf.ln(5)
             pdf.set_font("Arial", "B", 13)
-            pdf.cell(0, 8, line, ln=True)
+            pdf.multi_cell(0, 8, line)
             pdf.set_font("Arial", size=12)
 
         elif line.lower().startswith("3.") or "improvement" in line.lower():
             pdf.ln(5)
             pdf.set_font("Arial", "B", 13)
-            pdf.cell(0, 8, line, ln=True)
+            pdf.multi_cell(0, 8, line)
             pdf.set_font("Arial", size=12)
 
         else:
